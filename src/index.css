@@ -1,0 +1,171 @@
+/* ============================================================
+   index.css — ESTILOS GLOBALES de La Huerta de Ali
+   Se importa UNA sola vez en src/main.jsx y aplica a TODA la app.
+   Acá vive la paleta de colores (variables CSS), las tipografías
+   y las clases utilitarias reutilizables (.container, .btn, .page).
+   ============================================================ */
+
+:root {
+  /* ↑ :root = selector del elemento raíz (html). Acá definimos variables globales */
+  --color-bg: #252a27;
+  /* ↑ Variable de color: fondo general de la app (verde oscuro, modo oscuro) */
+  --color-bg-soft: #343b35;
+  /* ↑ Fondo suave para secciones destacadas (hero, resumen del carrito, footer) */
+  --color-card: #303733;
+  /* ↑ Fondo de las tarjetas (productos, equipo, detalle) */
+  --color-primary: #86a98b;
+  /* ↑ Verde principal: NavBar y botones primarios */
+  --color-primary-dark: #b2d0b0;
+  /* ↑ Verde claro para texto destacado o hover */
+  --color-secondary: #e8c09d;
+  /* ↑ Color de apoyo (botón secundario, avatar del equipo) */
+  --color-accent: #e5a8a8;
+  /* ↑ Acento rosa: badge del carrito y botón quitar */
+  --color-text: #f5f0e7;
+  /* ↑ Texto principal (casi blanco) */
+  --color-text-soft: #c7c4b9;
+  /* ↑ Texto secundario: descripciones y detalle */
+  --color-border: #59635a;
+  /* ↑ Bordes y separadores */
+
+  --font-display: 'Quicksand', sans-serif;
+  /* ↑ Tipografía de títulos (h1–h4) */
+  --font-body: 'Nunito Sans', sans-serif;
+  /* ↑ Tipografía del texto general */
+
+  --radius-sm: 10px;
+  /* ↑ Radio de esquinas pequeño (imágenes, inputs) */
+  --radius-md: 18px;
+  /* ↑ Radio mediano (tarjetas, selectores) */
+  --radius-lg: 28px;
+  /* ↑ Radio grande (hero, detalle del producto) */
+
+  --shadow-soft: 0 8px 24px rgba(0, 0, 0, 0.22);
+  /* ↑ Sombra suave para que las tarjetas "floten" sobre el fondo */
+}
+
+* {
+  /* ↑ * = TODOS los elementos de la página */
+  box-sizing: border-box;
+  /* ↑ El padding y borde se incluyen dentro del ancho/alto (evita sorpresas de layout) */
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  /* ↑ Sacamos los márgenes por defecto que pone el navegador */
+}
+
+body {
+  background-color: var(--color-bg);
+  /* ↑ Fondo general usando la variable de color */
+  color: var(--color-text);
+  font-family: var(--font-body);
+  line-height: 1.5;
+  /* ↑ line-height: interlineado cómodo para leer */
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  /* ↑ Todos los títulos usan la tipografía display */
+  font-weight: 700;
+  margin: 0 0 0.5em 0;
+  color: var(--color-text);
+}
+
+p {
+  margin: 0 0 1em 0;
+  /* ↑ Espaciado inferior entre párrafos */
+}
+
+a {
+  color: inherit;
+  /* ↑ inherit: los links heredan el color del texto padre (así no quedan azules) */
+  text-decoration: none;
+  /* ↑ Sin subrayado */
+}
+
+button {
+  font-family: var(--font-body);
+  cursor: pointer;
+  /* ↑ La mano al pasar sobre botones */
+  border: none;
+  /* ↑ Sin borde por defecto */
+}
+
+img {
+  max-width: 100%;
+  /* ↑ Las imágenes nunca desbordan su contenedor */
+  display: block;
+  /* ↑ Evita el espacio fantasma que dejan las imágenes en línea */
+}
+
+.container {
+  /* ↑ Clase utilitaria: centra el contenido y le da un ancho máximo cómodo */
+  max-width: 1140px;
+  margin: 0 auto;
+  /* ↑ auto: centra horizontalmente */
+  padding: 0 24px;
+  /* ↑ Respiración lateral en pantallas chicas */
+}
+
+.btn {
+  /* ↑ Clase base de TODOS los botones del sitio */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  /* ↑ 999px = píldora (bordes totalmente redondeados) */
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+  /* ↑ Transición suave al hacer hover (se mueve y cambia de color progresivamente) */
+}
+
+.btn-primary {
+  /* ↑ Variante verde principal */
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-dark);
+  transform: translateY(-1px);
+  /* ↑ Al pasar el mouse, el botón "sube" 1px (efecto de elevación) */
+}
+
+.btn-secondary {
+  /* ↑ Variante de apoyo (botón "Suscribirme" del footer) */
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-1px);
+}
+
+.btn-outline {
+  /* ↑ Variante delineada: fondo transparente con borde */
+  background-color: transparent;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary-dark);
+}
+
+.page {
+  /* ↑ Utilitaria para páginas: espacio vertical y altura mínima */
+  padding: 48px 0 72px;
+  min-height: 60vh;
+  /* ↑ 60% del alto de la pantalla para que el footer quede abajo */
+}
+
+.section-title {
+  /* ↑ Título de sección del catálogo */
+  font-size: 1.8rem;
+}
+
+.section-subtitle {
+  color: var(--color-text-soft);
+  max-width: 640px;
+}

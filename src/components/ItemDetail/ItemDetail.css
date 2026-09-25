@@ -1,0 +1,105 @@
+/* ============================================================
+   ItemDetail.css — Estilos de la vista de detalle (ItemDetail.jsx)
+   Se importa en src/components/ItemDetail/ItemDetail.jsx.
+   Aplica a: imagen grande + info del producto, selector de
+   cantidad y mensaje de confirmación post-agregado.
+   ============================================================ */
+
+.item-detail {
+  /* ↑ Contenedor principal: imagen a la izquierda, info a la derecha */
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  /* ↑ Dos columnas iguales */
+  gap: 40px;
+  background-color: var(--color-card);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  box-shadow: var(--shadow-soft);
+}
+
+.item-detail-image {
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  /* ↑ Imagen cuadrada siempre */
+  background-color: var(--color-bg-soft);
+}
+
+.item-detail-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* ↑ Llena el cuadro sin deformarse */
+}
+
+.item-detail-info {
+  display: flex;
+  flex-direction: column;
+  /* ↑ Los datos van apilados: categoría, título, precio, descripción... */
+}
+
+.item-detail-precio {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 6px 0 16px;
+}
+
+.item-detail-precio span {
+  /* ↑ La unidad (/ kg) en formato más chico y suave */
+  font-size: 0.95rem;
+  font-weight: 400;
+  color: var(--color-text-soft);
+}
+
+.item-detail-descripcion {
+  color: var(--color-text-soft);
+}
+
+.item-detail-stock {
+  /* ↑ "Disponible: X kg" */
+  font-size: 0.85rem;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.item-detail-compra,
+.item-detail-confirmacion {
+  /* ↑ Zona de compra (selector + botón) y zona de confirmación */
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  /* ↑ Si no entra en una línea, el contenido baja de línea */
+}
+
+.cantidad-selector {
+  /* ↑ El control con botones [−] [n] [+] */
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background-color: var(--color-bg-soft);
+  border-radius: 999px;
+  padding: 6px 18px;
+}
+
+.cantidad-selector button {
+  background: none;
+  font-size: 1.2rem;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.item-detail-confirmacion p {
+  width: 100%;
+  /* ↑ El mensaje "¡Agregado al carrito!" ocupa una línea completa */
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+@media (max-width: 700px) {
+  /* ↑ En pantallas chicas el detalle pasa a UNA columna */
+  .item-detail {
+    grid-template-columns: 1fr;
+  }
+}

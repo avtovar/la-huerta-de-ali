@@ -1,0 +1,51 @@
+/* ============================================================
+   NavBar.css — Estilos de la barra de navegación (NavBar.jsx)
+   Se importa en src/components/NavBar/NavBar.jsx.
+   Es la franja verde con los links (Inicio, Productos) y el carrito.
+   ============================================================ */
+
+.navbar {
+  background-color: var(--color-primary);
+  /* ↑ Franja verde principal */
+  margin-top: 18px;
+  /* ↑ La separamos del header */
+}
+
+.navbar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* ↑ Links a la izquierda, carrito a la derecha */
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.nav-links {
+  display: flex;
+  gap: 28px;
+  list-style: none;
+  /* ↑ Sacamos las viñetas de la lista */
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  /* ↑ Estilo base de cada link de navegación */
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 6px 4px;
+  border-bottom: 2px solid transparent;
+  /* ↑ Borde inferior transparente: lo usamos para el "subrayado" del link activo */
+}
+
+.nav-link:hover {
+  opacity: 0.85;
+  /* ↑ Al pasar el mouse baja un poco la opacidad (efecto sutil) */
+}
+
+.nav-link-active {
+  /* ↑ Clase que agrega NavLink cuando la URL coincide */
+  border-bottom: 2px solid var(--color-secondary);
+  /* ↑ "Subrayado" naranja pastel en el link de la página actual */
+}

@@ -1,0 +1,28 @@
+# ============================================================
+# .gitignore — archivos que NUNCA se suben a GitHub
+# ============================================================
+
+# Carpeta privada local: su contenido queda solo en la máquina
+no_subir/
+
+# Dependencias y build (se regeneran con npm)
+node_modules/
+dist/
+
+# Variables de entorno y secretos (nunca deben subirse)
+.env
+.env.*
+!.env.example
+*.env
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+credentials.json
+serviceAccountKey.json
+
+# Logs y temporales
+*.log
+npm-debug.log*
+.DS_Store

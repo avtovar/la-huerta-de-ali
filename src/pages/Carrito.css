@@ -1,0 +1,107 @@
+/* ============================================================
+   Carrito.css — Estilos de la página del carrito (Carrito.jsx)
+   Se importa en src/pages/Carrito.jsx y aplica SOLO a esa página:
+   lista de productos, selectores de cantidad, subtotales y total.
+   ============================================================ */
+
+.carrito-lista {
+  /* ↑ Contenedor vertical de las filas del carrito */
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin: 24px 0 32px;
+}
+
+.carrito-item {
+  /* ↑ Fila de un producto en el carrito */
+  display: grid;
+  /* ↑ Columns: imagen | info | cantidad | subtotal | quitar */
+  grid-template-columns: 64px 1fr auto auto auto;
+  align-items: center;
+  gap: 16px;
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: 12px 18px;
+  box-shadow: var(--shadow-soft);
+}
+
+.carrito-item img {
+  width: 64px;
+  height: 64px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  /* ↑ Recorta la imagen para que llene el cuadro sin deformarse */
+}
+
+.carrito-item-info h4 {
+  margin: 0;
+  /* ↑ Sacamos el margen por defecto del h4 (ya lo da el grid) */
+}
+
+.carrito-item-info p {
+  margin: 0;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}
+
+.carrito-item-subtotal {
+  font-weight: 700;
+  margin: 0;
+  /* ↑ Subtotal del producto (precio × cantidad) en negrita */
+}
+
+.carrito-item-quitar {
+  /* ↑ Botón ✕ para quitar el producto */
+  background: none;
+  color: var(--color-accent);
+  font-size: 1rem;
+  padding: 6px;
+}
+
+.carrito-resumen {
+  /* ↑ Barra inferior: vaciar carrito, total y finalizar compra */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  background-color: var(--color-bg-soft);
+  border-radius: var(--radius-md);
+  padding: 20px 24px;
+}
+
+.carrito-total {
+  /* ↑ Bloque del total a pagar */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.3rem;
+}
+
+.carrito-total span {
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+  /* ↑ Etiqueta "Total" en tamaño chico sobre el importe */
+}
+
+.carrito-vacio {
+  /* ↑ Centramos el mensaje de carrito vacío / gracias por tu compra */
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  /* ↑ En pantallas muy chicas reorganizamos la grilla de cada fila */
+  .carrito-item {
+    grid-template-columns: 50px 1fr;
+    /* ↑ Solo 2 columnas principales... */
+    grid-template-areas:
+      /* ↑ ...y definimos en qué zona va cada cosa (áreas nombradas) */
+      "img info"
+      "cant cant"
+      "sub quitar";
+  }
+
+  .carrito-resumen {
+    flex-direction: column;
+    /* ↑ Los botones y el total se apilan verticalmente */
+  }
+}

@@ -1,0 +1,68 @@
+/* ============================================================
+   Home.css — Estilos de la página principal (Home.jsx)
+   Se importa en src/pages/Home.jsx y aplica SOLO al hero
+   (la tarjeta de bienvenida de la página de inicio).
+   ============================================================ */
+
+.hero {
+  /* ↑ Tarjeta principal de bienvenida: texto + emojis en fila */
+  display: flex;
+  align-items: center;
+  /* ↑ Centra verticalmente el contenido */
+  justify-content: space-between;
+  /* ↑ Separa texto (izquierda) e imagen (derecha) */
+  gap: 40px;
+  background-color: var(--color-bg-soft);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  margin-bottom: 56px;
+  /* ↑ Separación con la grilla de productos que viene abajo */
+}
+
+.hero-eyebrow {
+  /* ↑ Etiqueta pequeña arriba del título ("La Huerta de Ali") */
+  display: inline-block;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 8px;
+}
+
+.hero-text h1 {
+  font-size: 2.2rem;
+  max-width: 480px;
+  /* ↑ Limita el ancho del título para una lectura cómoda */
+}
+
+.hero-text p {
+  max-width: 460px;
+  color: var(--color-text-soft);
+}
+
+.hero-cta {
+  margin-top: 8px;
+  /* ↑ Pequeña separación entre el párrafo y el botón */
+}
+
+.hero-image {
+  /* ↑ Los emojis decorativos 🥕🥬🍅🥦 */
+  font-size: 4rem;
+  line-height: 1.4;
+  text-align: center;
+}
+
+@media (max-width: 760px) {
+  /* ↑ Media query: estos estilos SOLO se aplican en pantallas de 760px o menos */
+  .hero {
+    flex-direction: column;
+    /* ↑ Apilamos texto e imagen en vertical */
+    text-align: center;
+    padding: 32px 24px;
+  }
+
+  .hero-text h1,
+  .hero-text p {
+    max-width: 100%;
+    /* ↑ En celulares dejamos que ocupen todo el ancho */
+  }
+}

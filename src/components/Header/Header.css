@@ -1,0 +1,43 @@
+/* ============================================================
+   Header.css — Estilos del encabezado (Header.jsx)
+   Se importa en src/components/Header/Header.jsx.
+   Aplica solo a la parte superior: logo, título y slogan.
+   ============================================================ */
+
+.header {
+  background-color: var(--color-bg);
+  padding-top: 20px;
+  /* ↑ Separamos el header de arriba del todo para que "flote" */
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  /* ↑ Logo y texto quedan centrados verticalmente */
+}
+
+.header-brand {
+  /* ↑ El enlace completo (logo + texto) funciona como "ir al inicio" */
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.header-logo {
+  /* ↑ El emoji 🥬 grande de la marca */
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.header-title {
+  margin: 0;
+  font-size: 1.6rem;
+  color: var(--color-primary-dark);
+  /* ↑ El nombre de la verdulería en verde claro destacado */
+}
+
+.header-slogan {
+  margin: 2px 0 0 0;
+  font-size: 0.85rem;
+  color: var(--color-text-soft);
+}

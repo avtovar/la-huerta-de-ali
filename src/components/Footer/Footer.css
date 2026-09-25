@@ -1,0 +1,160 @@
+/* ============================================================
+   Footer.css — Estilos del pie de página (Footer.jsx)
+   Se importa en src/components/Footer/Footer.jsx.
+   Cubre: datos de contacto, columna de legales, newsletter y
+   las tarjetas del equipo.
+   ============================================================ */
+
+.footer {
+  background-color: var(--color-bg-soft);
+  margin-top: 64px;
+  /* ↑ Separación con el contenido de arriba */
+  padding: 48px 0 32px;
+  border-top: 1px solid var(--color-border);
+  /* ↑ Línea divisoria superior */
+}
+
+.footer-top {
+  /* ↑ Las 3 columnas (contacto, legales, newsletter) */
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  /* ↑ 3 columnas de igual ancho (1fr = reparte el espacio en partes iguales) */
+  gap: 32px;
+}
+
+.footer-col h3 {
+  font-size: 1.1rem;
+  color: var(--color-primary-dark);
+}
+
+.footer-col p {
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  margin: 0 0 6px 0;
+}
+
+.footer-slogan {
+  font-style: italic;
+  /* ↑ El slogan en cursiva para diferenciarlo */
+}
+
+.footer-links {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 16px 0;
+}
+
+.footer-links li {
+  margin-bottom: 6px;
+}
+
+.footer-links a {
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  border-bottom: 1px solid transparent;
+  /* ↑ Sin subrayado, pero dejamos el espacio para animarlo en hover */
+}
+
+.footer-links a:hover {
+  color: var(--color-primary-dark);
+  border-bottom: 1px solid var(--color-primary-dark);
+  /* ↑ En hover aparece un subrayado verde */
+}
+
+.footer-copy {
+  font-size: 0.78rem;
+  margin-top: 12px;
+}
+
+.footer-newsletter {
+  /* ↑ Formulario: input + botón en fila */
+  display: flex;
+  gap: 8px;
+}
+
+.footer-newsletter input {
+  flex: 1;
+  /* ↑ El input ocupa todo el espacio disponible */
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  font-family: var(--font-body);
+}
+
+.footer-newsletter-ok {
+  /* ↑ Mensaje "¡Gracias por suscribirte!" */
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.footer-team {
+  /* ↑ Sección "Nuestro equipo" separada con borde superior */
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--color-border);
+}
+
+.footer-team h3 {
+  color: var(--color-primary-dark);
+  margin-bottom: 20px;
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.team-card {
+  /* ↑ Tarjeta de cada integrante del equipo */
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  text-align: center;
+  box-shadow: var(--shadow-soft);
+}
+
+.team-avatar {
+  /* ↑ Círculo con la inicial de la persona */
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 12px;
+  /* ↑ auto: centra el círculo horizontalmente */
+  border-radius: 50%;
+  background-color: var(--color-secondary);
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.3rem;
+}
+
+.team-card h4 {
+  margin-bottom: 2px;
+}
+
+.team-rol {
+  /* ↑ El rol del integrante (Fundador, Gerente...) */
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-primary-dark);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.team-card p {
+  font-size: 0.88rem;
+  color: var(--color-text-soft);
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  /* ↑ En pantallas chicas las columnas del footer pasan a apilarse */
+  .footer-top,
+  .team-grid {
+    grid-template-columns: 1fr;
+    /* ↑ Una sola columna */
+  }
+}

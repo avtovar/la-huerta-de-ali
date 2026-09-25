@@ -1,0 +1,20 @@
+/* ============================================================
+   Layout.css — Estilos del layout general (Layout.jsx)
+   Se importa en src/components/Layout/Layout.jsx.
+   Hace que la página ocupe toda la pantalla y que el main
+   empuje al footer hacia abajo aunque haya poco contenido.
+   ============================================================ */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  /* ↑ Columna: Header, NavBar, main, Footer uno debajo del otro */
+  min-height: 100vh;
+  /* ↑ Mínimo el alto de la pantalla (100vh = 100% del viewport) */
+}
+
+.layout-main {
+  flex: 1;
+  /* ↑ flex: 1 = el main crece para ocupar TODO el espacio libre */
+  /* ↑ Por eso el footer "pega" abajo aunque la página sea corta */
+}

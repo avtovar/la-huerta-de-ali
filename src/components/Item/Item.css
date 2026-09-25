@@ -1,0 +1,93 @@
+/* ============================================================
+   Item.css — Estilos de la tarjeta de producto (Item.jsx)
+   Se importa en src/components/Item/Item.jsx.
+   Es la "ficha" que se repite en la grilla del catálogo:
+   imagen, categoría, nombre, precio y botones.
+   ============================================================ */
+
+.item-card {
+  /* ↑ La tarjeta completa */
+  background-color: var(--color-card);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  /* ↑ Recorta la imagen para que respete las esquinas redondeadas */
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  /* ↑ Contenido en columna: imagen arriba, cuerpo abajo */
+  transition: transform 0.15s ease;
+  /* ↑ Animamos el desplazamiento del hover */
+}
+
+.item-card:hover {
+  transform: translateY(-3px);
+  /* ↑ Al pasar el mouse la tarjeta "sube" 3px (efecto flotante) */
+}
+
+.item-image-link {
+  /* ↑ El enlace que envuelve la imagen (lleva al detalle) */
+  display: block;
+  aspect-ratio: 1 / 1;
+  /* ↑ aspect-ratio 1/1 = la imagen siempre ocupa un cuadrado perfecto */
+  overflow: hidden;
+  background-color: var(--color-bg-soft);
+}
+
+.item-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* ↑ Cubre el cuadro sin deformarse (recorta el excedente) */
+}
+
+.item-body {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  /* ↑ Ocupa el alto restante para que los botones queden abajo en todas las tarjetas */
+}
+
+.item-categoria {
+  /* ↑ Categoría en letras chicas y mayúsculas */
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  /* ↑ Espaciado entre letras para un look más delicado */
+  color: var(--color-primary-dark);
+  font-weight: 700;
+}
+
+.item-nombre {
+  margin: 0;
+  font-size: 1.1rem;
+}
+
+.item-precio {
+  margin: 0 0 10px 0;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.item-precio span {
+  /* ↑ La unidad de medida (/ kg, / unidad) en formato chico y suave */
+  font-weight: 400;
+  font-size: 0.8rem;
+  color: var(--color-text-soft);
+}
+
+.item-actions {
+  margin-top: auto;
+  /* ↑ Empuja los botones hacia el fondo de la tarjeta */
+  display: flex;
+  gap: 8px;
+}
+
+.item-btn {
+  /* ↑ Ajuste de los botones dentro de la tarjeta */
+  flex: 1;
+  /* ↑ Cada botón ocupa la mitad del ancho */
+  padding: 9px 12px;
+  font-size: 0.82rem;
+}

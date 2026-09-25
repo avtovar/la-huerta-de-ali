@@ -1,0 +1,72 @@
+# ============================================================
+# Deploy a GitHub Pages — se ejecuta solo con cada push a main
+# Construye el proyecto con Vite y publica dist/ en Pages.
+# ============================================================
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # ↑ Se dispara con cada push a la rama main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+  # ↑ Permisos mínimos que necesita GitHub Pages para publicar
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+  # ↑ Si hay dos builds, cancela el anterior
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # ↑ Descarga el código del repo
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+        # ↑ Instala Node 20 y aprovecha la caché de npm
+
+      - name: Install dependencies
+        run: npm ci
+        # ↑ Instala las dependencias exactas del package-lock.json
+
+      - name: Build
+        run: npm run build
+        # ↑ Genera la carpeta dist/ (compilación de producción)
+
+      - name: SPA fallback (404 -> index)
+        run: cp dist/index.html dist/404.html
+        # ↑ GitHub Pages no maneja rutas SPA (ej. /productos al refrescar).
+        # ↑ Al copiar la app como 404.html, cualquier ruta desconocida
+        # ↑ sirve la app y React Router toma el control.
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+        # ↑ Sube la carpeta dist/ como artefacto para publicar
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+        # ↑ Publica el artefacto en GitHub Pages

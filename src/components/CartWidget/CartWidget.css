@@ -1,0 +1,40 @@
+/* ============================================================
+   CartWidget.css — Estilos del widget del carrito (CartWidget.jsx)
+   Se importa en src/components/CartWidget/CartWidget.jsx.
+   Es el "botoncito" redondo 🛒 con el contador de productos.
+   ============================================================ */
+
+.cart-widget {
+  position: relative;
+  /* ↑ position: relative para que el badge se posicione "dentro" de este botón */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  /* ↑ 50% = círculo perfecto */
+  background-color: rgba(255, 255, 255, 0.2);
+  /* ↑ Blanco semi-transparente para que se vea sobre el verde de la NavBar */
+  font-size: 1.2rem;
+}
+
+.cart-widget-badge {
+  /* ↑ El contador rosa de productos (ej. "3") */
+  position: absolute;
+  /* ↑ absolute: se posiciona respecto al .cart-widget (que es relative) */
+  top: -4px;
+  right: -4px;
+  /* ↑ Lo corremos fuera de la esquina superior derecha */
+  background-color: var(--color-accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 4px;
+}
