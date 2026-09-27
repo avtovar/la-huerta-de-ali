@@ -1,0 +1,267 @@
+# ============================================================
+# CI — Integración Continua
+# Valida, en cada push a main y en cada pull request hacia main,
+# dos cosas: que el proyecto COMPILA y que NO haya secretos
+# subidos al repo. No publica nada (de eso se encarga deploy.yml).
+# ============================================================
+
+name: CI
+
+# ┌──────────────────────────────────────────────────────────┐
+# │ ¿Cuándo corre?                                          │
+# │  - push a main: valida cada commit que llega a la rama   │
+# │  - pull_request a main: valida ANTES de poder mergear,   │
+# │    así el que abre el PR ve el semáforo rojo o verde     │
+# │    sin tener que esperar al merge.                        │
+# └──────────────────────────────────────────────────────────┘
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Permisos mínimos: solo leer el código.
+# OJO: acá NO van `pages: write` ni `id-token: write`.
+# Esos permisos los necesita deploy.yml para publicar en GitHub
+# Pages; si se los damos a este workflow le abrimos permisos
+# de publicación a un job que no publica nada.
+permissions:
+  contents: read
+
+# Si llegan varios pushes/PRs juntos, no encolamos runners
+# infinitamente: cancelamos el run anterior que quedó viejo.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+  # ↑ El grupo incluye la rama para que el CI de main y el de una
+  # ↑ rama de feature no se cancelen entre sí.
+
+jobs:
+  # ------------------------------------------------------------
+  # Job 1: ¿compila el proyecto?
+  # ------------------------------------------------------------
+  build:
+    name: Compilar (build)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        # ↑ Baja el código del repo en el runner
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+        # ↑ Node 20 (el mismo que usa deploy.yml, para que no haya
+        # ↑ sorpresas) y caché de npm para que la instalación
+        # ↑ sea más rápida.
+
+      - name: Install dependencies
+        run: npm ci
+        # ↑ Instala exactamente lo que dice package-lock.json.
+        # ↑ Si el lock está desactualizado respecto de package.json,
+        # ↑ este paso falla y el CI avisa. Esa es la idea.
+
+      - name: Build
+        run: npm run build
+        # ↑ ESTA ES LA VALIDACIÓN PRINCIPAL DEL CI.
+        # ↑ `vite build` falla si hay un error de sintaxis, un import
+        # ↑ roto, una variable sin definir, etc. Con eso ya sabemos
+        # ↑ que el proyecto no está roto antes de publicarlo.
+        # ↑ OJO: si el día de mañana se agregan los scripts `lint` y
+        # ↑ `test` al package.json, hay que agregar pasos acá adentro
+        # ↑ (después de install y antes de build) que los ejecuten,
+        # ↑ para que el CI los valide. Hoy ese proyecto NO tiene
+        # ↑ ESLint, ni Prettier, ni suite de tests, así que no hay
+        # ↑ nada que correr ahí: no se inventan herramientas nuevas.
+
+      - name: Verificar salida del build
+        run: |
+          set -euo pipefail
+
+          # `npm run build` podría devolver 0 sin haber escrito nada
+          # útil. Por eso, después de compilar, comprobamos que exista
+          # el HTML de entrada y que no esté vacío.
+          if [ ! -f dist/index.html ]; then
+            echo "::error::El build terminó sin generar dist/index.html"
+            echo "--- Contenido de dist/ ---"
+            ls -la dist/ 2>/dev/null || echo "la carpeta dist/ ni siquiera existe"
+            exit 1
+          fi
+
+          TAMANO=$(stat -c%s dist/index.html)
+          if [ "$TAMANO" -le 0 ]; then
+            echo "::error::dist/index.html está vacío (0 bytes)"
+            exit 1
+          fi
+
+          echo "OK: dist/index.html existe y pesa $TAMANO bytes"
+          echo "--- Archivos generados ---"
+          find dist -type f | head -20
+        # ↑ Si el HTML falta o pesa 0 bytes, `exit 1` hace fallar el
+        # ↑ paso, y un paso fallido hace fallar el job y el workflow.
+
+  # ------------------------------------------------------------
+  # Job 2: ¿hay secretos subidos?
+  # Corre EN PARALELO con `build` (no depende de él) para que un
+  # error de compilación no oculte un secreto filtrado, y al revés.
+  # ------------------------------------------------------------
+  secret-scan:
+    name: Escaneo de secretos
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout (historial completo)
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+        # ↑ fetch-depth: 0 baja TODOS los commits, no solo el último.
+        # ↑ Necesitamos el historial para poder escanear con `git grep`
+        # ↑ sobre todo lo que está versionado en el repo.
+
+      # ------------------------------------------------------------
+      # Chequeo 1: nombres de archivo prohibidos
+      # ------------------------------------------------------------
+      - name: Archivos prohibidos
+        run: |
+          set -uo pipefail
+
+          # Si alguno de estos archivos estuviera trackeado, el secreto
+          # está en el repositorio (y por lo tanto en el historial de
+          # GitHub), más allá de que .gitignore lo ignores hoy.
+          # Esta lista es un espejo de lo que ya declara el .gitignore:
+          # si algún día se agrega una regla de secreto al .gitignore,
+          # hay que reflejarla también acá.
+          SOSPECHOSOS=$(git ls-files -- \
+            '.env' \
+            '.env.*' \
+            '*.env' \
+            '*.pem' \
+            '*.key' \
+            '*.p12' \
+            '*.pfx' \
+            '*.p8' \
+            'credentials.json' \
+            'serviceAccountKey.json' \
+            'secrets/*' \
+            'no_subir/*' \
+            'no_subir/**')
+
+          if [ -n "$SOSPECHOSOS" ]; then
+            echo "::error::Hay archivos sensibles versionados en el repo:"
+            echo "$SOSPECHOSOS"
+            echo ""
+            echo "Sacalos con 'git rm --cached <archivo>' y agregalos al .gitignore."
+            echo "Ojo: si el secreto estuvo commiteado, borrarlo del repo NO alcanza;"
+            echo "hay que rotar la clave y limpiar el historial."
+            exit 1
+          fi
+
+          echo "OK: no hay archivos sensibles versionados."
+        # ↑ `git ls-files` no falla cuando no encuentra nada (devuelve
+        # ↑ salida vacía), así que el test correcto es `[ -n "$..." ]`.
+
+      # ------------------------------------------------------------
+      # Chequeo 2: contenido con pinta de secreto
+      # ------------------------------------------------------------
+      - name: Patrones de secretos en el código
+        run: |
+          set -uo pipefail
+
+          # ┌──────────────────────────────────────────────────┐
+          # │ ¿POR QUÉ EL ALCANCE ES ESTE?                    │
+          # │                                                  │
+          # │ Un escaneo "a todo lo que hay en el repo" produce│
+          # │ falsos positivos constantes: este mismo archivo  │
+          # │ y la documentación mencionan las palabras        │
+          # │ "PRIVATE KEY", "ghp_", "xoxb-" para explicar    │
+          # │ qué se está buscando, y el escaneo se marcaría   │
+          # │ a sí mismo, verde sobre verde, inútil.           │
+          # │                                                  │
+          # │ Por eso el escaneo se limita a extensiones de     │
+          # │ CÓDIGO y CONFIG (.js .jsx .css .html .json       │
+          # │ .yml .yaml .sh) y se excluyen a propósito los    │
+          # │ .md (README, DOCUMENTACION) y toda la carpeta    │
+          # │ .github/ (los workflows contienen los patrones   │
+          # │ que buscamos y el badge de sí mismo).            │
+          # │                                                  │
+          # │ Lo que se escanea es donde de verdad puede       │
+          # │ aparecer una clave pegada por error.            │
+          # │                                                  │
+          # │ OJO con la sintaxis: las exclusiones se escriben  │
+          # │ con el prefijo mágico ":(exclude,glob)". Si se    │
+          # │ pusiera ".github/*" a secas, git lo interpretaría │
+          # │ como un patrón de INCLUIR más (no como          │
+          # │ exclusión) y el archivo se seguiría escaneando:  │
+          # │ el workflow terminaría marcándose a sí mismo en  │
+          # │ cada corrida.                                    │
+          # └──────────────────────────────────────────────────┘
+          INCLUIR=('*.js' '*.jsx' '*.css' '*.html' '*.json' '*.yml' '*.yaml' '*.sh')
+          EXCLUIR=(':(exclude,glob)*.md' ':(exclude,glob).github/**')
+
+          PATRONES=(
+            'BEGIN RSA PRIVATE KEY'
+            'BEGIN OPENSSH PRIVATE KEY'
+            '-----BEGIN PRIVATE KEY-----'
+            'ghp_[A-Za-z0-9]{20,}'
+            'github_pat_[A-Za-z0-9_]{20,}'
+            'AKIA[0-9A-Z]{16}'
+            'sk-[A-Za-z0-9]{20,}'
+            'xox[baprs]-'
+          )
+
+          HAY_FALLA=0
+
+          for patron in "${PATRONES[@]}"; do
+            # `-e "$patron"` es necesario: los patrones que arrancan con
+            # guiones (ej. "-----BEGIN...") si no, los interpretaría
+            # git grep como opciones y no como patrón de búsqueda.
+            COINCIDENCIAS=$(git grep -nIE -e "$patron" -- \
+              "${INCLUIR[@]}" "${EXCLUIR[@]}" 2>/dev/null || true)
+
+            if [ -n "$COINCIDENCIAS" ]; then
+              echo "::error::Posible secreto detectado con el patrón: $patron"
+              echo "$COINCIDENCIAS"
+              echo ""
+              HAY_FALLA=1
+            fi
+          done
+
+          if [ "$HAY_FALLA" -ne 0 ]; then
+            echo ""
+            echo "Se encontraron posibles secretos (archivo:línea arriba)."
+            echo "Revisalos, rotalos si son reales y volvé a correr el CI."
+            exit 1
+          fi
+
+          echo "OK: no se encontraron patrones de secretos en el código."
+        # ↑ Imprime archivo y línea de cada coincidencia (por eso -n)
+        # ↑ y falla el job si encuentra alguna.
+
+  # ------------------------------------------------------------
+  # Job 3: semáforo único
+  # ------------------------------------------------------------
+  # No agrega validaciones nuevas: solo junta los dos jobs en un
+  # check verde/rojo. Si este job aparece verde, significa que
+  # `build` y `secret-scan` terminaron bien.
+  ci-ok:
+    name: CI
+    runs-on: ubuntu-latest
+    needs: [build, secret-scan]
+    # ↑ Espera a los dos: si alguno falló, este job se saltea y
+    # ↑ el workflow entero queda en rojo.
+    if: always()
+    steps:
+      - name: Resultado
+        run: |
+          echo "build         -> ${{ needs.build.result }}"
+          echo "secret-scan   -> ${{ needs.secret-scan.result }}"
+        # ↑ Imprime el resultado de cada job para que quede en el log.
+
+      - name: Fallar si algún job previo falló
+        if: needs.build.result != 'success' || needs.secret-scan.result != 'success'
+        run: |
+          echo "::error::El CI no pasó: revisá los jobs fallidos de arriba."
+          exit 1
+        # ↑ Único lugar donde este job falla. Si todo lo demás salió
+        # ↑ bien, este paso no corre y el workflow queda en verde.

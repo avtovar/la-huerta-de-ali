@@ -1,5 +1,7 @@
 # La Huerta de Ali
 
+[![CI](https://github.com/avtovar/la-huerta-de-ali/actions/workflows/ci.yml/badge.svg)](https://github.com/avtovar/la-huerta-de-ali/actions/workflows/ci.yml) [![GitHub Pages](https://github.com/avtovar/la-huerta-de-ali/actions/workflows/deploy.yml/badge.svg)](https://avtovar.github.io/la-huerta-de-ali/)
+
 Proyecto de Pre-Entrega 2 de React JS, realizado por Ali Tovar.
 
 La Huerta de Ali es una verdulería online con un catálogo de productos frescos,
