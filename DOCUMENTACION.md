@@ -6,18 +6,19 @@
 
 - `index.html` — Punto de entrada de Vite: define `#root` donde React dibuja toda la app.
 - `package.json` — Configuración del proyecto: nombre, scripts (`dev`, `build`, `preview`) y dependencias.
-- `vite.config.js` — Configuración mínima de Vite (solo el plugin de React).
-- `src/main.jsx` — Entrada de la app: monta React y envuelve todo con `BrowserRouter` + `CartProvider`.
+- `vite.config.js` — Configuración de Vite: el plugin de React y el `base`, que cambia según el entorno (`/` cuando se levanta el servidor, `/la-huerta-de-ali/` en la build, porque GitHub Pages sirve el proyecto dentro de una subcarpeta del dominio).
+- `src/main.jsx` — Entrada de la app: monta React y envuelve todo con `BrowserRouter` (que recibe `basename={import.meta.env.BASE_URL}` para saber en qué carpeta del dominio está la app) + `CartProvider`.
 - `src/index.css` — Estilos GLOBALES: variables de color (paleta), tipografías, botones genéricos, clases utilitarias (`.container`, `.btn`, `.page`).
 - `src/App.jsx` — Configura las rutas de la aplicación (Home, Productos, Detalle, Carrito, 404).
 - `src/context/CartContext.jsx` — Estado GLOBAL del carrito con Context API: agregar, quitar, cambiar cantidad, vaciar y calcular totales.
+- `src/utils/rutasPublicas.js` — Helper `rutaPublica(relativa)`: le antepone el prefijo del proyecto a las rutas de los archivos de `public/` (el JSON del catálogo y las imágenes), que si se escribieran con `/` inicial darían 404 en el sitio publicado.
 - `src/components/Layout/Layout.jsx` — Esqueleto común de todas las páginas: Header + NavBar + contenido (`<Outlet/>`) + Footer.
 - `src/components/Header/Header.jsx` — Encabezado con el logo y el slogan del emprendimiento.
 - `src/components/NavBar/NavBar.jsx` — Barra de navegación con links (`Inicio`, `Productos`) y el carrito.
 - `src/components/CartWidget/CartWidget.jsx` — Ícono del carrito con un contador de productos agregados.
 - `src/components/Footer/Footer.jsx` — Pie de página: contacto, legales, newsletter simulado y tarjetas del equipo.
 - `src/components/Item/Item.jsx` — Tarjeta reutilizable que muestra un producto (imagen, nombre, precio, botones).
-- `src/components/ItemListContainer/ItemListContainer.jsx` — Hace `fetch` de `productos.json`, muestra "cargando", maneja error y dibuja la grilla de `Item`.
+- `src/components/ItemListContainer/ItemListContainer.jsx` — Hace `fetch` de `productos.json` (la URL la arma `rutaPublica()`), muestra "cargando", maneja error y dibuja la grilla de `Item`.
 - `src/components/ItemDetail/ItemDetail.jsx` — Vista de detalle de un producto con selector de cantidad y control de stock.
 - `src/pages/Home.jsx` — Página principal con hero de presentación y el catálogo.
 - `src/pages/Productos.jsx` — Catálogo completo reutilizando `ItemListContainer`.
@@ -25,7 +26,7 @@
 - `src/pages/Carrito.jsx` — Página del carrito: lista de items, cantidades, subtotales, total y finalizar compra.
 - `src/pages/NotFound.jsx` — Página 404 para cualquier ruta inexistente.
 - `public/productos.json` — Datos estáticos de los 12 productos (nombre, precio, stock, imagen...).
-- `public/verduras/` — Imágenes locales de cada verdura.
+- `public/verduras/` — Imágenes locales de cada verdura (en `productos.json` se referencian sin barra inicial: `verduras/tomate.jpg`).
 - `src/**/*.css` — Estilos particulares de cada componente (organizados en la misma carpeta del componente).
 
 ## Comandos
@@ -47,9 +48,10 @@ npm run preview  -> previsualiza la compilación de producción localmente
 5. **Context API (`createContext` + `useContext`)** — Comparte el carrito entre TODOS los componentes sin pasar props de mano en mano.
 6. **React Router DOM** — `BrowserRouter`, `Routes`, `Route`, `NavLink`, `Link`, `useParams` y `Outlet` para navegar sin recargar la página.
 7. **`.map()` con `key`** — Se usa para convertir un array de productos en una lista de componentes; `key` ayuda a React a identificar cada uno.
-8. **`fetch` de un JSON local** — La app carga los productos desde `public/productos.json` (simula una API).
-9. **`grid` / `flexbox` en CSS** — Para armar grillas de productos, layout de página y diseños responsive.
-10. **Variables CSS (`:root`)** — Centralizan colores y fuentes para mantener una paleta consistente.
+8. **`fetch` de un JSON local** — La app carga los productos desde `public/productos.json` (simula una API). La URL no se escribe a mano: la arma `rutaPublica('productos.json')`.
+9. **`import.meta.env.BASE_URL` y el prefijo de rutas** — El proyecto se publica en GitHub Pages dentro de la subcarpeta `/la-huerta-de-ali/`, así que una ruta escrita con `/` inicial se resuelve desde la raíz del DOMINIO y da 404. Vite publica el `base` de `vite.config.js` en `import.meta.env.BASE_URL` (`/` en desarrollo, `/la-huerta-de-ali/` en la build) y el helper `rutaPublica()` le antepone ese prefijo a los archivos de `public/`. Como el `BrowserRouter` recibe ese mismo valor en su prop `basename`, React Router compara las rutas de la app contra la URL correcta y no muestra el 404 en todas las páginas.
+10. **`grid` / `flexbox` en CSS** — Para armar grillas de productos, layout de página y diseños responsive.
+11. **Variables CSS (`:root`)** — Centralizan colores y fuentes para mantener una paleta consistente.
 
 ## Árbol de dependencias
 
@@ -75,6 +77,9 @@ index.html
                       │    └─ ItemDetail/ItemDetail.jsx   ✅ (ItemDetail.css ✅)
                       ├─ Carrito.jsx + Carrito.css        ✅
                       └─ NotFound.jsx                     ✅
+src/utils/
+  └─ rutasPublicas.js    ✅ arma las rutas de los archivos de public/
+       └─ importado por: ItemListContainer, Item, ItemDetail, ProductoDetalle, Carrito
 public/
   ├─ productos.json    ✅ datos del catálogo (se lee con fetch)
   └─ verduras/         ✅ imágenes locales
@@ -108,7 +113,8 @@ Variables definidas en `src/index.css` (modo oscuro con acentos pastel):
 ## Cómo cambiar...
 
 - **Colores del sitio** — Edita las variables `--color-*` en `src/index.css` (`:root`). Un solo cambio se refleja en toda la app.
-- **Catálogo de productos** — Agrega, quita o modifica objetos en `public/productos.json` (respeta `id` únicos). Las imágenes van en `public/verduras/`.
+- **Catálogo de productos** — Agrega, quita o modifica objetos en `public/productos.json` (respeta `id` únicos). Las imágenes van en `public/verduras/`. Ojo con el campo `imagen`: se escribe RELATIVO a `public/` y SIN barra inicial (`verduras/tomate.jpg`); con una barra inicial el navegador la busca en la raíz del dominio y da 404 en el sitio publicado.
+- **Carpeta donde se publica el sitio** — Está en el `base` de `vite.config.js`. Si el proyecto pasa a servirse en otra subcarpeta (o en la raíz del dominio), cambiá ese valor: `rutaPublica()` y el `basename` del `BrowserRouter` se ajustan solos, sin tocar los componentes ni el JSON.
 - **Rutas** — Agrega un `<Route>` en `src/App.jsx` y crea la página correspondiente en `src/pages/`.
 - **Datos del emprendimiento** — Email, teléfono, Instagram y sede están en `src/components/Footer/Footer.jsx`.
 - **Control de stock** — El límite por producto se define en `productos.json` (`stock`) y se respeta en `CartContext`, `ItemDetail` y `Carrito`.

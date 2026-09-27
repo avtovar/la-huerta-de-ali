@@ -89,6 +89,7 @@ npm run preview
 - Catálogo de 12 verduras.
 - Carga de productos desde `public/productos.json` usando `fetch` dentro de `useEffect`.
 - Imágenes guardadas localmente en `public/verduras`.
+- Rutas de `public/` resueltas con `rutaPublica()`, para que funcionen en GitHub Pages (subcarpeta `/la-huerta-de-ali/`).
 - Tarjetas reutilizables mediante el componente `Item`.
 - Vista de detalle para cada producto.
 - Selector de cantidad.
@@ -116,7 +117,7 @@ recargar la página.
 
 ```text
 index.html               Punto de entrada de Vite (contiene el <div id="root">)
-vite.config.js           Configuración de Vite (plugin de React)
+vite.config.js           Plugin de React y `base` según el entorno: `/` en dev, `/la-huerta-de-ali/` en Pages
 package.json             Dependencias y scripts del proyecto
 local.sh                 Atajo Bash que instala lo necesario y levanta el servidor
 
@@ -126,6 +127,8 @@ src/
   App.jsx                Configuración de rutas
   context/
     CartContext.jsx      Estado global del carrito
+  utils/
+    rutasPublicas.js     Arma las rutas de public/ con el prefijo de Pages
   components/
     Layout/              Estructura general de la aplicación
     Header/              Logo y slogan

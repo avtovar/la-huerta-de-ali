@@ -5,6 +5,10 @@ import { useEffect, useState } from 'react'
 import Item from '../Item/Item'
 // ↑ La tarjeta que se repite por cada producto del catálogo
 
+import { rutaPublica } from '../../utils/rutasPublicas'
+// ↑ rutaPublica: arma la ruta del JSON con el prefijo del proyecto
+// ↑ (import.meta.env.BASE_URL). Ver src/utils/rutasPublicas.js
+
 import './ItemListContainer.css'
 // ↑ Estilos propios de la grilla de productos
 
@@ -19,8 +23,12 @@ function ItemListContainer({ saludo }) {
 
   useEffect(() => {
     // ↑ Este bloque corre UNA vez, cuando el componente se monta ([] = sin dependencias)
-    fetch('/productos.json')
+    fetch(rutaPublica('productos.json'))
       // ↑ Pedimos el archivo público del catálogo (simula una API)
+      // ↑ OJO: la URL NO lleva '/' inicial a mano. rutaPublica() le pone delante
+      // ↑ import.meta.env.BASE_URL, que en desarrollo es '/' y en el build es
+      // ↑ '/la-huerta-de-ali/'. Con '/productos.json' pelado el navegador lo
+      // ↑ buscaría en la raíz del dominio y en GitHub Pages daría 404.
       .then((res) => res.json())
       // ↑ Convertimos la respuesta en un objeto/array JavaScript
       .then((data) => {

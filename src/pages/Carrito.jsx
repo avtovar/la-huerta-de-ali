@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../context/CartContext'
 // ↑ useCart: acceso completo al carrito global (items, totales y acciones)
 
+import { rutaPublica } from '../utils/rutasPublicas'
+// ↑ rutaPublica: antepone el prefijo del proyecto a la ruta de la imagen
+
 import './Carrito.css'
 // ↑ Estilos propios de la página del carrito
 
@@ -56,7 +59,8 @@ function Carrito() {
           // ↑ .map: una fila por cada producto del carrito
           <div className="carrito-item" key={item.id}>
             {/* ↑ key: id único del producto */}
-            <img src={item.imagen} alt={item.nombre} />
+            <img src={rutaPublica(item.imagen)} alt={item.nombre} />
+            {/* ↑ Foto del producto: el carrito guarda el mismo 'imagen' del JSON */}
             <div className="carrito-item-info">
               <h4>{item.nombre}</h4>
               <p>${item.precio} / {item.unidad}</p>

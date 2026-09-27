@@ -20,7 +20,12 @@ ReactDOM.createRoot(document.getElementById('root')).render(
   // ↑ Buscamos el <div id="root"> de index.html y montamos la app ahí dentro
   <React.StrictMode>
     {/* ↑ StrictMode: en desarrollo detecta errores y malas prácticas (en producción no hace nada) */}
-    <BrowserRouter>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
+      {/* ↑ basename le dice a React Router en qué CARPETA está la app dentro del dominio. */}
+      {/* ↑ Sin esto, en el sitio publicado (/la-huerta-de-ali/) React Router compararía */}
+      {/* ↑ la URL completa "/la-huerta-de-ali/" con las rutas declaradas, no encontraría */}
+      {/* ↑ ninguna y mostraría la página 404. Como BASE_URL es '/' en desarrollo y */}
+      {/* ↑ '/la-huerta-de-ali/' en la build, el mismo código sirve para los dos casos. */}
       {/* ↑ Todo lo de adentro podrá usar links, rutas y useParams de react-router-dom */}
       <CartProvider>
         {/* ↑ Todo lo de adentro podrá leer/modificar el carrito con useCart() */}

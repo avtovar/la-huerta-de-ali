@@ -7,7 +7,7 @@
     "unidad": "kg",
     "stock": 40,
     "descripcion": "Tomates rojos y jugosos, ideales para ensaladas, salsas y sándwiches. Seleccionados a mano por su color parejo y su punto justo de maduración.",
-    "imagen": "/verduras/tomate.jpg"
+    "imagen": "verduras/tomate.jpg"
   },
   {
     "id": 2,
@@ -17,7 +17,7 @@
     "unidad": "unidad",
     "stock": 25,
     "descripcion": "Hojas tiernas y crocantes, perfectas como base de cualquier ensalada fresca. Cosechada el mismo día de la entrega.",
-    "imagen": "/verduras/lechuga.jpg"
+    "imagen": "verduras/lechuga.jpg"
   },
   {
     "id": 3,
@@ -27,7 +27,7 @@
     "unidad": "kg",
     "stock": 50,
     "descripcion": "Zanahorias dulces y crujientes, excelentes para comer crudas, en jugos o como guarnición.",
-    "imagen": "/verduras/zanahoria.jpg"
+    "imagen": "verduras/zanahoria.jpg"
   },
   {
     "id": 4,
@@ -37,7 +37,7 @@
     "unidad": "kg",
     "stock": 60,
     "descripcion": "Papas de campo, versátiles para hervir, freír, hornear o hacer puré. Un clásico que no puede faltar.",
-    "imagen": "/verduras/papa.jpg"
+    "imagen": "verduras/papa.jpg"
   },
   {
     "id": 5,
@@ -47,7 +47,7 @@
     "unidad": "kg",
     "stock": 45,
     "descripcion": "Cebollas frescas de sabor intenso, la base perfecta para el sofrito de cualquier receta.",
-    "imagen": "/verduras/cebolla.jpg"
+    "imagen": "verduras/cebolla.jpg"
   },
   {
     "id": 6,
@@ -57,7 +57,7 @@
     "unidad": "kg",
     "stock": 30,
     "descripcion": "Zapallitos tiernos y de piel fina, ideales para tartas, salteados o al horno.",
-    "imagen": "/verduras/zapallito.jpg"
+    "imagen": "verduras/zapallito.jpg"
   },
   {
     "id": 7,
@@ -67,7 +67,7 @@
     "unidad": "kg",
     "stock": 20,
     "descripcion": "Morrones carnosos y dulces, perfectos para asar, rellenar o sumar color a tus platos.",
-    "imagen": "/verduras/morron.jpg"
+    "imagen": "verduras/morron.jpg"
   },
   {
     "id": 8,
@@ -77,7 +77,7 @@
     "unidad": "unidad",
     "stock": 18,
     "descripcion": "Brócoli fresco y compacto, cargado de nutrientes, ideal al vapor, salteado o en sopas.",
-    "imagen": "/verduras/brocoli.jpg"
+    "imagen": "verduras/brocoli.jpg"
   },
   {
     "id": 9,
@@ -87,7 +87,7 @@
     "unidad": "atado",
     "stock": 22,
     "descripcion": "Hojas verde oscuro, suaves y nutritivas, excelentes crudas en ensaladas o cocidas en tartas.",
-    "imagen": "/verduras/espinaca.jpg"
+    "imagen": "verduras/espinaca.jpg"
   },
   {
     "id": 10,
@@ -97,7 +97,7 @@
     "unidad": "kg",
     "stock": 35,
     "descripcion": "Pepinos frescos y crocantes, perfectos para ensaladas, encurtidos o una picada liviana.",
-    "imagen": "/verduras/pepino.jpg"
+    "imagen": "verduras/pepino.jpg"
   },
   {
     "id": 11,
@@ -107,7 +107,7 @@
     "unidad": "kg",
     "stock": 24,
     "descripcion": "Berenjenas de piel brillante, ideales para milanesas, escabeche o al horno con especias.",
-    "imagen": "/verduras/berenjena.jpg"
+    "imagen": "verduras/berenjena.jpg"
   },
   {
     "id": 12,
@@ -117,6 +117,6 @@
     "unidad": "cabeza",
     "stock": 55,
     "descripcion": "Ajo fresco de aroma intenso, infaltable para darle sabor a todas tus preparaciones.",
-    "imagen": "/verduras/ajo.jpg"
+    "imagen": "verduras/ajo.jpg"
   }
 ]

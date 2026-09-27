@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 // ↑ useCart: acceso al carrito global (para el botón "Agregar")
 
+import { rutaPublica } from '../../utils/rutasPublicas'
+// ↑ rutaPublica: antepone el prefijo del proyecto a la ruta de la imagen
+
 import './Item.css'
 // ↑ Estilos propios de la tarjeta
 
@@ -20,8 +23,9 @@ function Item({ producto }) {
       {/* ↑ article: la tarjeta es una unidad de contenido independiente */}
       <Link to={`/producto/${id}`} className="item-image-link">
         {/* ↑ Template string: crea la URL dinámica, ej. /producto/3 */}
-        <img src={imagen} alt={nombre} className="item-image" loading="lazy" />
-        {/* ↑ Imagen del producto. loading="lazy": se carga solo cuando está cerca de la vista */}
+        <img src={rutaPublica(imagen)} alt={nombre} className="item-image" loading="lazy" />
+        {/* ↑ Imagen del producto. rutaPublica() le pone el prefijo del proyecto */}
+        {/* ↑ loading="lazy": se carga solo cuando está cerca de la vista */}
       </Link>
       <div className="item-body">
         <span className="item-categoria">{categoria}</span>

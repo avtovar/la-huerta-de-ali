@@ -9,6 +9,10 @@ import { useParams, Link } from 'react-router-dom'
 import ItemDetail from '../components/ItemDetail/ItemDetail'
 // ↑ Componente que muestra los datos del producto y permite agregarlo al carrito
 
+import { rutaPublica } from '../utils/rutasPublicas'
+// ↑ rutaPublica: arma la ruta del JSON con el prefijo del proyecto
+// ↑ (import.meta.env.BASE_URL). Ver src/utils/rutasPublicas.js
+
 function ProductoDetalle() {
   const { id } = useParams()
   // ↑ Sacamos el id de la URL, ej. en /producto/5 → id = "5"
@@ -22,7 +26,9 @@ function ProductoDetalle() {
     // ↑ Este bloque corre cada vez que cambia el id (y la primera vez)
     setCargando(true)
     // ↑ Reiniciamos el loading por si venimos de otro detalle
-    fetch('/productos.json')
+    fetch(rutaPublica('productos.json'))
+      // ↑ Mismo caso que en el catálogo: la URL la construye rutaPublica()
+      // ↑ para incluir '/la-huerta-de-ali/' en el sitio publicado.
       .then((res) => res.json())
       // ↑ Convertimos la respuesta a array de productos
       .then((data) => {

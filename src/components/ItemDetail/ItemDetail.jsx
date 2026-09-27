@@ -7,6 +7,9 @@ import { Link } from 'react-router-dom'
 import { useCart } from '../../context/CartContext'
 // ↑ useCart: leemos el carrito y usamos addToCart
 
+import { rutaPublica } from '../../utils/rutasPublicas'
+// ↑ rutaPublica: antepone el prefijo del proyecto a la ruta de la imagen
+
 import './ItemDetail.css'
 // ↑ Estilos propios de la vista de detalle
 
@@ -43,8 +46,8 @@ function ItemDetail({ producto }) {
   return (
     <div className="item-detail">
       <div className="item-detail-image">
-        <img src={imagen} alt={nombre} />
-        {/* ↑ Imagen grande del producto */}
+        <img src={rutaPublica(imagen)} alt={nombre} />
+        {/* ↑ Imagen grande del producto, con el prefijo del proyecto */}
       </div>
 
       <div className="item-detail-info">
