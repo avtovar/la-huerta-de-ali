@@ -1,0 +1,38 @@
+# ============================================================
+# .gitattributes — le dice a Git cómo tratar los finales de línea
+# ============================================================
+# ↑ Sin este archivo, Git usa `core.autocrlf` de cada máquina.
+#   En Windows eso convierte LF→CRLF al clonar, y en Linux/macOS
+#   un script con CRLF NO funciona: el shebang queda con un \r pegado
+#   y Bash responde "bad interpreter". Este archivo lo evita.
+
+# Detecta texto automáticamente en todos los archivos
+* text=auto
+
+# ↑ `text=auto` marca los .txt como texto y el repo guarda LF.
+#   Los binarios (imágenes .png/.jpg de public/verduras) se respetan
+#   tal cual porque git los detecta como binarios y no los toca.
+
+# --- Los scripts de shell SIEMPRE en LF, sin excepción ---
+*.sh text eol=lf
+# ↑ `eol=lf` obliga a que el archivo salga con LF al clonar,
+#   aunque la máquina de destino tenga autocrlf activado.
+#   Esto es lo que mantiene vivo el shebang de local.sh.
+
+# --- Código y configuración del proyecto, también en LF ---
+*.js   text eol=lf
+*.jsx  text eol=lf
+*.css  text eol=lf
+*.html text eol=lf
+*.json text eol=lf
+*.yml  text eol=lf
+*.md   text eol=lf
+
+# --- Las imágenes nunca se tocan ---
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.webp binary
+*.svg  text eol=lf
+# ↑ SVG es texto (XML), no binario: se normaliza a LF.

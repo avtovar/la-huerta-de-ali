@@ -16,7 +16,43 @@ detalle individual, carrito de compras y diseño responsive en modo oscuro.
 
 ## Instalación y ejecución
 
-Requisitos: Node.js y npm instalados.
+Requisitos: Node.js instalado (se recomienda la versión 18 o superior) y npm,
+que ya viene incluido dentro de Node.
+
+Hay dos formas de levantar el proyecto en desarrollo. Las dos funcionan:
+
+- Opción A: el atajo `./local.sh`, que hace los pasos repetitivos por vos.
+- Opción B: los comandos de npm a mano, que son el camino oficial de la cursada.
+
+### Opción A: el atajo `./local.sh`
+
+`local.sh` es un script Bash que se ubica solo en la raíz del proyecto, verifica
+que `node` y `npm` estén instalados, avisa si la versión de Node es menor a 18,
+ejecuta `npm install` automáticamente cuando hace falta (si no existe la carpeta
+`node_modules` o si `package-lock.json` quedó más reciente) y después levanta el
+servidor de desarrollo.
+
+```bash
+./local.sh
+```
+
+Muestra un banner al arrancar y un mensaje de despedida al salir. Cualquier
+argumento extra se reenvía tal cual a Vite:
+
+```bash
+./local.sh --host          # expone el servidor en la red local
+./local.sh --port 3000     # usa el puerto 3000 en lugar del 5173
+```
+
+En Windows el atajo no funciona con doble clic: el archivo empieza con una línea
+`#!/usr/bin/env bash`, que solo honra un intérprete Unix. Usá Git Bash, usá WSL,
+o invocá el intérprete explícitamente desde PowerShell:
+
+```powershell
+bash ./local.sh
+```
+
+### Opción B: comandos npm (el camino oficial)
 
 1. Abrir una terminal en la carpeta del proyecto.
 2. Instalar las dependencias:
@@ -80,6 +116,7 @@ recargar la página.
 index.html               Punto de entrada de Vite (contiene el <div id="root">)
 vite.config.js           Configuración de Vite (plugin de React)
 package.json             Dependencias y scripts del proyecto
+local.sh                 Atajo Bash que instala lo necesario y levanta el servidor
 
 src/
   index.css              Estilos GLOBALES: paleta de colores, tipografías y botones
@@ -126,6 +163,23 @@ cada clase CSS y los conceptos de React que se usan), ver
 - Teléfono/WhatsApp: +54 9 12345678
 - Instagram: @huertaali
 - Sede: Av. Siempre Verde 1234, Buenos Aires
+
+## Autor
+
+| Dato | Información |
+| --- | --- |
+| Nombre | Ali Tovar |
+| Rol | Autor y desarrollador del proyecto |
+| Cursada | Pre-Entrega · React JS |
+| Email del emprendimiento | [huertaali@gmail.com](mailto:huertaali@gmail.com) |
+| Teléfono/WhatsApp | +54 9 12345678 |
+| Instagram | @huertaali |
+| Sede | Av. Siempre Verde 1234, Buenos Aires |
+| Código | [github.com/avtovar/la-huerta-de-ali](https://github.com/avtovar/la-huerta-de-ali) |
+| Sitio publicado | [avtovar.github.io/la-huerta-de-ali](https://avtovar.github.io/la-huerta-de-ali/) |
+
+> **La Huerta de Ali** · Somos los mejores en calidad y productos frescos.
+> Pre-Entrega 2 de React JS. Proyecto realizado por **Ali Tovar**.
 
 ## Notas
 
